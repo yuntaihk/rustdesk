@@ -316,9 +316,13 @@ impl InvokeUiSession for SciterHandler {
             ConnType::RDP => {}
             ConnType::PORT_FORWARD => {}
             ConnType::FILE_TRANSFER => {}
+            ConnType::VIEW_CAMERA => {}
             ConnType::DEFAULT_CONN => {
                 crate::keyboard::client::start_grab_loop();
             }
+            // Left empty code from compilation.
+            // Please replace the code in the PR.
+            ConnType::VIEW_CAMERA => {}
         }
     }
 
@@ -529,7 +533,7 @@ impl sciter::EventHandler for SciterSession {
         fn is_keyboard_mode_supported(String);
         fn save_keyboard_mode(String);
         fn alternative_codecs();
-        fn change_prefer_codec();
+        fn update_supported_decodings();
         fn restart_remote_device();
         fn request_voice_call();
         fn close_voice_call();
@@ -554,6 +558,8 @@ impl SciterSession {
 
         let conn_type = if cmd.eq("--file-transfer") {
             ConnType::FILE_TRANSFER
+        } else if cmd.eq("--view-camera") {
+            ConnType::VIEW_CAMERA
         } else if cmd.eq("--port-forward") {
             ConnType::PORT_FORWARD
         } else if cmd.eq("--rdp") {
